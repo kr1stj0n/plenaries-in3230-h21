@@ -1,4 +1,4 @@
-# Public Git repository for the Plenary sessions of IN3230/IN4230 (Fall 2021) #
+# Git repo for the IN3230/IN4230 Plenaries (Fall 2021) #
 
 This is the main repository of the Plenaries of IN3230/4230 Fall21 course at the
 University of Oslo.
