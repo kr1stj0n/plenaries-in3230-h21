@@ -19,13 +19,13 @@ such skills, it is highly recommended to attend the plenaries/group sessions
 where we will cover the necessary concepts needed to solve the assignments.</br>
 
 We continued with an interactive session of questions and answers in order for
-the students to self-evaluate their skills. See the results [here](./menti_results.pdf)
+the students to self-evaluate their skills. See the results [here](./menti_results.pdf).
 
 ## NREC cloud ##
 
 The second session of the plenary was dedicated to the NREC cloud. We had a
 step-by-step demonstration on launching a virtual machine in the cloud and
-accessing it via SSH, following this [tutorial](https://www.uio.no/studier/emner/matnat/ifi/IN3230/h21/oblig/running-your-vm-on-nrec.html)
+accessing it via SSH, following this [tutorial](https://www.uio.no/studier/emner/matnat/ifi/IN3230/h21/oblig/running-your-vm-on-nrec.html).
 
 ## Minimal Interconnection Protocol ##
 
