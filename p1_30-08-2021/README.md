@@ -1,4 +1,4 @@
-# First plenary session: 30.08.2021 #
+# 1st plenary session: 30.08.2021 #
 
 The three main topics of the first plenary session were the followings:
 

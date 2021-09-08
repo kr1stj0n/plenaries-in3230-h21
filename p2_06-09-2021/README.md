@@ -1,4 +1,4 @@
-# Second Plenary session: 06.09.2021 #
+# 2nd Plenary session: 06.09.2021 #
 
 In the second plenary session we mainly talked about the following topics:
 
@@ -21,7 +21,7 @@ We then talked about UNIX sockets and checked the implementations of
 client/server applications that use such sockets to communicate to eath other.
 UNIX sockets will be use as the interface between ping applications and MIP
 daemons. Check the code example
-[here](https://github.com/kr1stj0n/plenaries-in3230-h21/tree/main/06-09-2021/unix_sockets).
+[here](https://github.com/kr1stj0n/plenaries-in3230-h21/tree/main/p2_06-09-2021/unix_sockets).
 
 ## epoll() ##
 
@@ -86,7 +86,7 @@ Here is an example from `man epoll`:
 
 We didn't have time to talk about RAW sockets, but you can check a working
 example on how to use them
-[here](https://github.com/kr1stj0n/plenaries-in3230-h21/tree/main/06-09-2021/raw_sockets).
+[here](https://github.com/kr1stj0n/plenaries-in3230-h21/tree/main/p2_06-09-2021/raw_sockets).
 Also, attend the next Orakel for more code examples about RAW sockets.  In the
 next plenary session, we will hand code a simple implementation of MIP-ARP using
 RAW socket, that helps three nodes (A --- B --- C) to get to know each other.
