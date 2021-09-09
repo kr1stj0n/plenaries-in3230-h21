@@ -86,8 +86,8 @@ Here is an example from `man epoll`:
 
 We didn't have time to talk about RAW sockets, but you can check a working
 example on how to use them
-[here](https://github.com/kr1stj0n/plenaries-in3230-h21/tree/main/p2_06-09-2021/raw_sockets).
-https://beej.us/guide/bgnet/ is a good resource about socket programming in C.
+[here](https://github.com/kr1stj0n/plenaries-in3230-h21/tree/main/p2_06-09-2021/raw_sockets).  
+<https://beej.us/guide/bgnet/> is a good resource about socket programming in C.
 Also, attend the next Orakel for more code examples about RAW sockets.  In the
 next plenary session, we will hand code a simple implementation of MIP-ARP using
 RAW socket, that helps three nodes (A --- B --- C) to get to know each other.

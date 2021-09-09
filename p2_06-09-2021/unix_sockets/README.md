@@ -1,14 +1,12 @@
-# 1st ORAKEL (IN3230) - UNIX sockets
+# 2nd Plenary (IN3230/4230) - UNIX sockets
 
 In this session, we're going to implement a client/server application
 using UNIX sockets.
 
+## Usage
 
-## Usage:
-
-- Compile the program using 'make all' in the main directory.
-- ./chat -s to run the server  and ./chat -c to connect as a
-  client.
+- Compile the program using `make all` in the main directory.
+- `./chat -s` to run the server and `./chat -c` to connect as a client.
 - Follow on-screen instructions
 - Practise and implement new features.
 
