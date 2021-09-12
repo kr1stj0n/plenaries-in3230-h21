@@ -1,6 +1,6 @@
 """ Orakel IN3230/4230 - Point-to-Point topology
 
-    host A <----> host B
+    host A <----> host B <----> host C
 
     Usage: sudo mn --mac --custom topo_p2p.py --topo mytopo
 
@@ -18,10 +18,12 @@ class MyTopo( Topo ):
         Topo.__init__( self )
 
         # Add hosts
-        leftHost = self.addHost( 'h1' )
-        rightHost = self.addHost( 'h2' )
+        hostA = self.addHost( 'A' )
+        hostB = self.addHost( 'B' )
+        hostC = self.addHost( 'C' )
 
         # Add link
-        self.addLink( leftHost, rightHost )
+        self.addLink( hostA, hostB )
+        self.addLink( hostB, hostC )
 
 topos = { 'mytopo': ( lambda: MyTopo() ) }

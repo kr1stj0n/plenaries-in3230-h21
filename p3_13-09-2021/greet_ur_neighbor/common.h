@@ -2,6 +2,7 @@
 #define _COMMON_H
 
 #define MAX_EVENTS 10
+#define MAX_IF     3
 #define ETH_BROADCAST {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF}
 
 
@@ -12,18 +13,18 @@ struct ether_frame {
 	uint8_t contents[0];
 } __attribute__((packed));
 
-struct if_data {
-	int raw_sock_fd;
-	struct sockaddr_ll local_addr;
-	struct sockaddr_ll remote_addr;
+struct ifs_data {
+	struct sockaddr_ll addr[MAX_IF];
+	int rsock;
+	int ifn;
 };
 
-void get_mac_from_interface(struct sockaddr_ll *);
+void get_mac_from_interfaces(struct ifs_data *);
 void print_mac_addr(uint8_t *, size_t);
-void config_if(struct if_data *, int);
+void init_ifs(struct ifs_data *, int);
 int create_raw_socket(void);
-int send_arp_request(struct if_data *);
-int send_arp_response(struct if_data *);
-int handle_arp_packet(struct if_data *);
+int send_arp_request(struct ifs_data *);
+int send_arp_response(struct ifs_data *, struct sockaddr_ll *, struct ether_frame);
+int handle_arp_packet(struct ifs_data *);
 
 #endif

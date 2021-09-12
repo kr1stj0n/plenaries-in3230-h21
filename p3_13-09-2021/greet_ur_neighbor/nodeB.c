@@ -13,7 +13,7 @@
 
 int main(int argc, char *argv[])
 {
-	struct if_data local_if;
+	struct ifs_data local_ifs;
 	int     raw_sock, rc;
 
 	struct epoll_event ev, events[MAX_EVENTS];
@@ -22,8 +22,11 @@ int main(int argc, char *argv[])
 	/* Set up a raw AF_PACKET socket without ethertype filtering */
 	raw_sock = create_raw_socket();
 
-	config_if(&local_if, raw_sock);
+	/* Walk through all interfaces of the node and store their addresses */
+	init_ifs(&local_ifs, raw_sock);
 
+	for (int i = 0; i < local_ifs.ifn; i++)
+		print_mac_addr(local_ifs.addr[i].sll_addr, 6);
 
 	epollfd = epoll_create1(0);
 	if (epollfd == -1) {
@@ -31,7 +34,7 @@ int main(int argc, char *argv[])
 		exit(EXIT_FAILURE);
 	}
 
-	ev.events = EPOLLIN;
+	ev.events = EPOLLIN|EPOLLHUP;
 	ev.data.fd = raw_sock;
 	if (epoll_ctl(epollfd, EPOLL_CTL_ADD, raw_sock, &ev) == -1) {
 		perror("epoll_ctl: raw_sock");
@@ -45,22 +48,14 @@ int main(int argc, char *argv[])
 			exit(EXIT_FAILURE);
 		} else if (events->data.fd == raw_sock) {
 			printf("\n<info> The neighbor is initiating a handshake\n");
-			
-			rc = handle_arp_packet(&local_if);
+			printf("\n<info> epoll signal %d\n", events[0].events);
+
+			rc = handle_arp_packet(&local_ifs);
 			if (rc < 1) {
 				perror("recv");
 				exit(EXIT_FAILURE);
 			}
-
-
-			printf("<nodeB> Nice to meet you ");
-			print_mac_addr(local_if.remote_addr.sll_addr, 6);
-
-			send_arp_response(&local_if);
-			printf("<nodeB> I am ");
-			print_mac_addr(local_if.local_addr.sll_addr, 6);
 		}
-		break;
 	}
 
 	close(raw_sock);
