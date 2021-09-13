@@ -9,9 +9,19 @@
 #include "common.h"
 
 /*
- * This function gets a pointer to a struct sockaddr_ll
- * and fills it with necessary address info from the interface device with
- * sll_ifindex.
+ * Print MAC address
+ */
+void print_mac_addr(uint8_t *addr, size_t len) {
+	size_t i;
+
+	for (i = 0; i < len - 1; i++) {
+		printf("%d:", addr[i]);
+	}
+	printf("%d\n", addr[i]);
+}
+/*
+ * This function stores struct sockaddr_ll addresses for all the interfaces of
+ * the node (except loopback interface)
  */
 void get_mac_from_interfaces(struct ifs_data *ifs)
 {
@@ -27,31 +37,26 @@ void get_mac_from_interfaces(struct ifs_data *ifs)
 	}
 
 	/* Walk the list looking for ifaces interesting to us */
-	printf("Interface list:\n");
 	for (ifp = ifaces; ifp != NULL; ifp = ifp->ifa_next) {
-		/* We make certain that the ifa_addr member is actually set: */
+		/* We make sure that the ifa_addr member is actually set: */
 		if (ifp->ifa_addr != NULL && ifp->ifa_addr->sa_family == AF_PACKET && strcmp("lo", ifp->ifa_name))
-			/* Copy the address info into our temp. variable */
-			memcpy(&(ifs->addr[i++]), (struct sockaddr_ll*)ifp->ifa_addr, sizeof(struct sockaddr_ll));
+			/* Copy the address info into the array of our struct */
+			memcpy(&(ifs->addr[i++]),
+			       (struct sockaddr_ll*)ifp->ifa_addr,
+			       sizeof(struct sockaddr_ll));
 	}
-	/* After the loop, the address info of all interfaces are stored */
+	/* After the for loop, the address info of all interfaces are stored */
+	/* Update the counter of the interfaces */
 	ifs->ifn = i;
 
 	/* Free the interface list */
 	freeifaddrs(ifaces);
 }
 
-void print_mac_addr(uint8_t *addr, size_t len) {
-	size_t i;
-
-	for (i = 0; i < len - 1; i++) {
-		printf("%d:", addr[i]);
-	}
-	printf("%d\n", addr[i]);
-}
-
 void init_ifs(struct ifs_data *ifs, int rsock) {
 	get_mac_from_interfaces(ifs);
+
+	/* We use one RAW socket per node */
 	ifs->rsock = rsock;
 }
 
@@ -92,13 +97,16 @@ int send_arp_request(struct ifs_data *ifs)
 	msg = (struct msghdr *)calloc(1, sizeof(struct msghdr));
 
 	/* Fill out message metadata struct */
+	/* Node A and C have only one interface, which is stored in the first
+	 * element of the array when we walked through the interface list.
+	 */
 	memcpy(ifs->addr[0].sll_addr, dst_addr, 6);
 	msg->msg_name    = &(ifs->addr[0]);
 	msg->msg_namelen = sizeof(struct sockaddr_ll);
 	msg->msg_iovlen  = 1;
 	msg->msg_iov     = msgvec;
 
-	/* Construct and send message */
+	/* Send message via RAW socket */
 	rc = sendmsg(ifs->rsock, msg, 0);
 	if (rc == -1) {
 		perror("sendmsg");
@@ -136,10 +144,15 @@ int handle_arp_packet(struct ifs_data *ifs)
 		return -1;
 	}
 
+	printf("We got a hand offer from neighbor: ");
+	print_mac_addr(frame_hdr.src_addr, 6);
+
 	/* Send back the ARP response via the same receiving interface */
-	rc = send_arp_response(ifs, &so_name, frame_hdr);
-	if (rc < 0)
-		perror("send_arp_response");
+	if (frame_hdr.dst_addr == ETH_BROADCAST) {
+		rc = send_arp_response(ifs, &so_name, frame_hdr);
+		if (rc < 0)
+			perror("send_arp_response");
+	}
 
 	return rc;
 }
@@ -153,8 +166,8 @@ int send_arp_response(struct ifs_data *ifs, struct sockaddr_ll *so_name,
 
 	/* Swap MAC addresses of the ether_frame to send back (unicast) the ARP
 	 * response */
-
 	memcpy(frame.dst_addr, frame.src_addr, 6);
+
 	/* Find the MAC address of the interface where the broadcast packet came
 	 * from. We use sll_ifindex recorded in the so_name. */
 	for (int i = 0; i < ifs->ifn; i++) {
@@ -172,7 +185,7 @@ int send_arp_response(struct ifs_data *ifs, struct sockaddr_ll *so_name,
 	msg = (struct msghdr *)calloc(1, sizeof(struct msghdr));
 
 	/* Fill out message metadata struct */
-	memcpy(so_name->sll_addr, frame.dst_addr, 6);
+	//memcpy(so_name->sll_addr, frame.dst_addr, 6);
 	msg->msg_name    = so_name;
 	msg->msg_namelen = sizeof(struct sockaddr_ll);
 	msg->msg_iovlen  = 1;
@@ -186,7 +199,7 @@ int send_arp_response(struct ifs_data *ifs, struct sockaddr_ll *so_name,
 		return -1;
 	}
 
-	printf("<nodeA> Nice to meet you ");
+	printf("Nice to meet you ");
 	print_mac_addr(frame.dst_addr, 6);
 
 	/* Remember that we allocated this on the heap; free it */

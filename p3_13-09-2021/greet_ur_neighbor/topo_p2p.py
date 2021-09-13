@@ -1,6 +1,6 @@
 """ Orakel IN3230/4230 - Point-to-Point topology
 
-    host A <----> host B <----> host C
+    A <----> B <----> C
 
     Usage: sudo mn --mac --custom topo_p2p.py --topo mytopo
 
