@@ -48,8 +48,6 @@ int main(int argc, char *argv[])
 			exit(EXIT_FAILURE);
 		} else if (events->data.fd == raw_sock) {
 			printf("\n<info> The neighbor is initiating a handshake\n");
-			printf("\n<info> epoll signal %d\n", events[0].events);
-
 			rc = handle_arp_packet(&local_ifs);
 			if (rc < 1) {
 				perror("recv");

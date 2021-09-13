@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
 	}
 
 	/* Introduce yourself */
-	printf("\n<nodeA> Hi! I am ");
+	printf("\n<nodeC> Hi! I am ");
 	print_mac_addr(local_if.addr[0].sll_addr, 6);
 
 	/* Send ARP request to know the neighbor next door */

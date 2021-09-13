@@ -144,11 +144,19 @@ int handle_arp_packet(struct ifs_data *ifs)
 		return -1;
 	}
 
-	printf("We got a hand offer from neighbor: ");
-	print_mac_addr(frame_hdr.src_addr, 6);
-
 	/* Send back the ARP response via the same receiving interface */
-	if (frame_hdr.dst_addr == ETH_BROADCAST) {
+	/* Send ARP response only if the request was a broadcast ARP request
+	 * This is so dummy!
+	 */
+	int check = 0;
+	uint8_t brdcst[] = ETH_BROADCAST;
+	for (int i = 0; i < 6; i++) {
+		if (frame_hdr.dst_addr[0] != brdcst[i])
+			check = -1;
+	}
+	if (!check) {
+		printf("We got a hand offer from neighbor: ");
+		print_mac_addr(frame_hdr.src_addr, 6);
 		rc = send_arp_response(ifs, &so_name, frame_hdr);
 		if (rc < 0)
 			perror("send_arp_response");
