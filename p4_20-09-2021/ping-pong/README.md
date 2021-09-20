@@ -1,0 +1,34 @@
+# 3nd Plenary session (IN3230/4230) - RAW sockets
+
+In this example, we're going to implement the simplest ARP protocol
+which will help two nodes to get to know the neighbor between them.
+
+## "Greet your neighbor!"
+
+`topo_p2p.py` is the python script that generates the mininet topology.
+The topology is the most basic one, point-to-point topology.
+We try to keep things very simple in here! :-)
+
+[NodeA]ifAB------------ifBA[NodeB]ifBC------------ifCB[NodeC]
+
+NodeA and NodeC will talk to NodeB via RAW sockets.
+epoll() will be used to monitor the activity of the RAW socket descriptors.
+
+While NodeB will be listening to a RAW socket, NodeA/NodeC will send a broadcast
+frame asking "Tell me who you are?". NodeB will reply with its MAC address via
+the interface where the request came from, and will cache NodeA/NodeC's MAC
+address. Then, they shake their hands (Yes, they're both full vaccinated!)
+
+Usage:
+
+- Compile all programmes with `make all` in the current directory
+- Create the mininet topology using `sudo mn --custom topo_p2p.py --topo mytopo`
+- In the mininet console, access node A, B, C using `xterm A B C`
+  (You should have used -Y argument in the SSH command:
+  `ssh -Y debian@ip_address_of_your_VM`
+- From the xterm consoles, run `./nodeB` at node B and `./nodeA` at node A or
+  `./nodeC` at node C.
+
+  Practise and implement new features in the applications.
+
+  Good luck :-)
