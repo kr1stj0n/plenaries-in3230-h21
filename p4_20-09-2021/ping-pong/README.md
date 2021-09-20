@@ -1,33 +1,31 @@
-# 3nd Plenary session (IN3230/4230) - RAW sockets
+# 4th Plenary session (IN3230/4230)
 
-In this example, we're going to implement the simplest ARP protocol
-which will help two nodes to get to know the neighbor between them.
+In this example, we're going to send PING/PONG messages between two neighbors
+via RAW sockets.
 
-## "Greet your neighbor!"
+## "PING - PONG"
 
 `topo_p2p.py` is the python script that generates the mininet topology.
 The topology is the most basic one, point-to-point topology.
-We try to keep things very simple in here! :-)
+We try to keep things very very simple in here! :-)
 
-[NodeA]ifAB------------ifBA[NodeB]ifBC------------ifCB[NodeC]
+    [NodeA]ifAB------------ifBA[NodeB]
 
-NodeA and NodeC will talk to NodeB via RAW sockets.
+NodeA and NodeB will perform a simple handshake of ping pong messages.
 epoll() will be used to monitor the activity of the RAW socket descriptors.
 
-While NodeB will be listening to a RAW socket, NodeA/NodeC will send a broadcast
-frame asking "Tell me who you are?". NodeB will reply with its MAC address via
-the interface where the request came from, and will cache NodeA/NodeC's MAC
-address. Then, they shake their hands (Yes, they're both full vaccinated!)
+While NodeB will be listening to a RAW socket, nodeA will send a PING message
+encapsulated in a simple hello packet which has its own hello header. NodeB will
+receive the packet and reply back with a PONG message to nodeA.
 
 Usage:
 
 - Compile all programmes with `make all` in the current directory
 - Create the mininet topology using `sudo mn --custom topo_p2p.py --topo mytopo`
-- In the mininet console, access node A, B, C using `xterm A B C`
+- In the mininet console, access node A and B using `xterm A B`
   (You should have used -Y argument in the SSH command:
   `ssh -Y debian@ip_address_of_your_VM`
-- From the xterm consoles, run `./nodeB` at node B and `./nodeA` at node A or
-  `./nodeC` at node C.
+- From the xterm consoles, run `./nodeB` at node B and `./nodeA` at node A.
 
   Practise and implement new features in the applications.
 
