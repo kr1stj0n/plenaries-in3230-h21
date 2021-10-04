@@ -11,6 +11,8 @@ code examples discussed during the sessions.
   2. Plenary 2: [p2_06-09-2021](p2_06-09-2021/)
   3. Plenary 3: [p3_13-09-2021](p3_13-09-2021/)
   4. Plenary 4: [p4_20-09-2021](p4_20-09-2021/)
+  5. Plenary 5: [p5_20-09-2021](p5_27-09-2021/)
+  6. Plenary 6: [p6_04-10-2021](p6_04-10-2021/)
 
 ## Info ##
 
