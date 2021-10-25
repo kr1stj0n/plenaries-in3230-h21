@@ -13,6 +13,7 @@ code examples discussed during the sessions.
   4. Plenary 4: [p4_20-09-2021](p4_20-09-2021/)
   5. Plenary 5: [p5_20-09-2021](p5_27-09-2021/)
   6. Plenary 6: [p6_04-10-2021](p6_04-10-2021/)
+  7. Plenary 7: [p7_25-10-2021](p7_25-10-2021/)
 
 ## Info ##
 
